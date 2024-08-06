@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="input" />
+    <button id="btn">Submit</button>
+    <div id="message"></div>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+      const btn = document.getElementById("btn");
+      const input = document.getElementById("input");
+      const show = document.getElementById("message");
+      const socket = io()
+    //   input.addEventListener("submit",() => {
+    //     const socket = io();
+    //     const message = input.value;
+    //     socket.emit("chatm", message);
+    //   })
+      btn.addEventListener("click", () => {
+        const message = input.value;
+        socket.emit("chatm", message);
+      });
+      socket.on("chat", (message) => {
+        const p = document.createElement("p");
+        p.innerText = message;
+        show.appendChild(p);
+      });
+    </script>
+  </body>
+</html>
