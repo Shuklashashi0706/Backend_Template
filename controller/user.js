@@ -91,6 +91,29 @@ const getUser = async (req, res) => {
   }
 };
 
+const searchUser = async (req, res) => {
+  try {
+    const { name } = req.query;
+    const aggregate = [
+      {
+        $match: { name: { $regex: `${name}`, $options: "i" } },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: 1,
+        },
+      },
+    ];
+    const resp = await userModal.aggregate(aggregate);
+    if (resp) {
+      res.status(200).send({ message: "Done", names: resp });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -151,4 +174,5 @@ module.exports = {
   deleteUser,
   deleteAllUser,
   updateUser,
+  searchUser,
 };
